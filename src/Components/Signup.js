@@ -6,7 +6,10 @@ import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL } from "./helper";
-import './Signup.css'
+import './Signup.css';
+import {Icon} from 'react-icons-kit';
+import {eyeOff} from 'react-icons-kit/feather/eyeOff';
+import {eye} from 'react-icons-kit/feather/eye'
 function Signup() {
   localStorage.removeItem('token');
   localStorage.removeItem('token1');
@@ -21,6 +24,8 @@ function Signup() {
         department:"",
         cpassword:""
     });
+    const [type, setType] = useState('password');
+  const [icon, setIcon] = useState(eyeOff);
     const [flag,setflag]=useState(true);
     const [flag1,setflag1]=useState(false);
     const [log,setlog]=useState("");
@@ -83,6 +88,16 @@ function Signup() {
       function cancel(){
         window.location.reload();
       }
+
+      const handleToggle = () => {
+        if (type==='password'){
+           setIcon(eye);
+           setType('text')
+        } else {
+           setIcon(eyeOff)
+           setType('password')
+        }
+     } 
   return (
     <>
       { flag && <div class="container mx-auto m-5 pt-2 pp">
@@ -119,7 +134,6 @@ function Signup() {
                 onChange={handleSubmit}
               />
             </Form.Group>
-
                 </div>
             </div>
             <div className="row">
@@ -164,7 +178,7 @@ function Signup() {
                 <div class='col-6'>
                 <Form.Group className="mt-4" controlId="formBasicPassword">
                     <Form.Control
-                type="password"
+                type={type}
                 name="password"
                 value={user.password}
                 placeholder="Password*(length > 5)"
@@ -176,14 +190,16 @@ function Signup() {
             <div class='row'>
                 <Form.Group className="mt-4" controlId="formBasicEmail">
               <Form.Control
-                type="password"
+                type={type}
                 name="cpassword"
                 value={user.cpassword}
                 placeholder="Confirm Password*"
                 onChange={handleSubmit}
               />
             </Form.Group>
-
+            <span onClick={handleToggle} className="ms-1">
+                  <Icon icon={icon} size={20}/>
+              </span>
                 </div>
             <div className="d-grid mt-4">
               <Button variant="primary" type="Submit" onClick={signup1}>

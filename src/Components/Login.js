@@ -7,7 +7,9 @@ import './Login.css';
 import axios from "axios";
 import { BASE_URL } from "./helper";
 import image from './Images/img1.png';
-
+import {Icon} from 'react-icons-kit';
+import {eyeOff} from 'react-icons-kit/feather/eyeOff';
+import {eye} from 'react-icons-kit/feather/eye'
 const Login=( )=> {
   localStorage.removeItem('token');
   localStorage.removeItem('token1');
@@ -19,7 +21,8 @@ const Login=( )=> {
       email:"",
       name:""
   });
-
+  const [type, setType] = useState('password');
+  const [icon, setIcon] = useState(eyeOff);
   const handleSubmit = async (e) => {
     e.preventDefault()
     setlog("");
@@ -50,6 +53,16 @@ const Login=( )=> {
         setlog("qwe");
       }
     }
+
+    const handleToggle = () => {
+      if (type==='password'){
+         setIcon(eye);
+         setType('text')
+      } else {
+         setIcon(eyeOff)
+         setType('password')
+      }
+   } 
      return (
       <>
       <div class="container mx-auto m-5 pt-2 pp">
@@ -57,7 +70,7 @@ const Login=( )=> {
             <div class="col-5" style={{ width: "48%", height: "50%" }}>
                 <div><img src={image} style={{ width: "90%" ,maxHeight:"100%"}} alt=""></img></div>
             </div>
-            <div class="col-6 ms-2 mt-5 p-2" >
+            <div class="col-6 ms-2 mt-5 p-1" >
             <h1 className="">Login </h1>
             {d==="" && (<h6 className="text-success">Verifying user....</h6>)}
             {log!=="" && (<h6 className="text-danger">Invalid Email/Password....</h6>)}
@@ -75,13 +88,16 @@ const Login=( )=> {
   
             <Form.Group className="mt-5" controlId="formBasicPassword">
 
-              <Form.Control
-                type="password"
-                name="password"
-                value={user.password}
-                placeholder="Password"
-                onChange={handleSubmit}
-              />
+            <Form.Control
+                  type={type}
+                  name="password"
+                  placeholder="Enter Password"
+                  value={user.password}
+                  onChange={handleSubmit}
+             />
+             <span onClick={handleToggle} className="ms-1">
+                  <Icon icon={icon} size={20}/>
+              </span>
             </Form.Group>
             <div className="mt-3">
                 <Link to="/forgotpassword">Forgot Password ? </Link>

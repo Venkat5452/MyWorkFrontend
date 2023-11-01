@@ -5,6 +5,9 @@ import { useState } from 'react';
 import axios from "axios";
 import { BASE_URL } from "./helper";
 import { useNavigate } from "react-router-dom";
+import {Icon} from 'react-icons-kit';
+import {eyeOff} from 'react-icons-kit/feather/eyeOff';
+import {eye} from 'react-icons-kit/feather/eye'
 function Forgotpassword() {
     const navigate=useNavigate();
     const [flag,setflag]=useState(true);
@@ -12,6 +15,9 @@ function Forgotpassword() {
     const [flag2,setflag2]=useState(false);
     const [flag3,setflag3]=useState(false);
     const [log,setlog]=useState("");
+    const [type, setType] = useState('password');
+    const [icon, setIcon] = useState(eyeOff);
+    const [flag5,setflag5]=useState(false);
     const [user,SetUser]=useState({
         password:"",
         email:"",
@@ -20,6 +26,7 @@ function Forgotpassword() {
     });
     const handleSubmit = async (e) => {
         e.preventDefault()
+        setflag5(false);
         setlog("");
           const {name,value}=e.target
           SetUser ({
@@ -27,7 +34,15 @@ function Forgotpassword() {
               [name]:value
           })
         };
-    
+        const handleToggle = () => {
+          if (type==='password'){
+             setIcon(eye);
+             setType('text')
+          } else {
+             setIcon(eyeOff)
+             setType('password')
+          }
+       } 
     const fun1 = async(e) =>{
         e.preventDefault();
         const {email}=user;
@@ -54,7 +69,8 @@ function Forgotpassword() {
     const verifyotp=async(e)=>{
         e.preventDefault();
         const {email,otp}=user;
-        if(otp && email) {
+        if(otp!=="" && email!=="") {
+          setflag5(true);
             axios.post(BASE_URL + "/resetpassword",user).then(res=>{
                 setlog("Invalid OTP")
                 if(res.data==="Verified"){
@@ -68,6 +84,7 @@ function Forgotpassword() {
               });
         }else {
           setlog("Invalid OTP")
+          setflag5("false");
         }
     }
     function cancel(){
@@ -127,6 +144,7 @@ function Forgotpassword() {
             <h2 className="mb-3">Verify Your OTP Sent to</h2>
             <h6>{user.email}</h6>
             {flag1 && <h5 className="text-success">Sending OTP...</h5>}
+            {flag5 && log==="" && <h5 className="text-success">Verifying OTP...</h5>}
             {!flag1 && log!=="" && <h5 className="text-danger ms-5 px-5">{log}</h5>}
              <Form >
              <Form.Group className="mb-3" controlId="formBasicOTP">
@@ -158,7 +176,7 @@ function Forgotpassword() {
             <Form onSubmit={updatenew}>
             <Form.Group className="mt-5" controlId="formBasicPassword">
                 <Form.Control
-                type="password"
+                type={type}
                 name="password"
                 value={user.password}
                 placeholder="New Password"
@@ -166,11 +184,14 @@ function Forgotpassword() {
                 </Form.Group>
             <Form.Group className="mt-5" controlId="formBasicPassword">
                 <Form.Control
-                type="password"
+                type={type}
                 name="cpassword"
                 value={user.cpassword}
                 placeholder="Confirm Password"
                 onChange={handleSubmit}/>
+                <span onClick={handleToggle}>
+                  <Icon icon={icon} size={20}/>
+              </span>
                 </Form.Group>
                 <div className="d-grid mt-4">
               <Button variant="primary" type="Submit">
@@ -178,6 +199,9 @@ function Forgotpassword() {
               </Button>
             </div>
             </Form>
+            <div className="p-2"><Button variant="primary" type="Submit" onClick={cancel}>
+                Cancel
+              </Button></div>
           </div> 
 
           }
