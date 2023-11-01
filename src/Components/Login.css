@@ -1,0 +1,16 @@
+.pp {
+    background-color:#F9FAFB;
+    flex-wrap: wrap;
+  }
+
+  .ppp{
+    max-width: 500px;
+   justify-content: center;
+   align-items: center;
+   text-align: center;
+   margin: auto;
+   margin-top: 150px;
+   max-height: 500px;
+  }
+
+  
