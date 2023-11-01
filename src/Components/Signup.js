@@ -87,15 +87,15 @@ function Signup() {
     <>
       { flag && <div class="container mx-auto m-5 pt-2 pp">
         <div class="row justify-content-center">
-            <div class="col-5">
-                <img src={image} alt=""></img>
+        <div class="col-5" style={{ width: "49%", height: "50%" }}>
+                <div><img src={image} style={{ width: "100%" ,maxHeight:"100%"}} alt=""></img></div>
             </div>
-            <div class="col-5 ms-5 mt-5 p-2">
+            <div class="col-6 ms-2 mt-5 p-2">
             <h1 className="">Sign up</h1>
             {flag1 && <h5 className="text-success">Sending OTP...</h5>}
             {!flag1 && log!=="" && <h5 className="text-danger">{log}</h5>}
             <div>Have have an account? <Link to="/Login">Log in</Link></div>
-            <Form >
+            <Form  style={{ minWidth: "50%"}}>
             <div className="row">
             <div class='col-6'>
                 <Form.Group className="mt-4" controlId="formBasicEmail">
